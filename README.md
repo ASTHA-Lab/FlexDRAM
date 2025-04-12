@@ -1,3 +1,3 @@
 # FlexDRAM
 
-# The content of this repo will be available shortly!
+The content of this repo will be available shortly!
