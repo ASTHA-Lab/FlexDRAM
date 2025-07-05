@@ -10,7 +10,7 @@
 
 Existing DRAM models lack accuracy in sense amplifier design and access transistor characterization, leading to large errors in power and performance estimates. FlexDRAM addresses these gaps by:
 - Supporting accurate access transistor modeling using I<sub>ON</sub> and I<sub>OFF</sub>
-- Providing a DRAM datapath model validated against JEDEC DDR4 specs
+- Providing a DRAM datapath model in SPICE validated against JEDEC DDR4 specs
 - Enabling fast design-space exploration with scaling, sizing, and transistor modeling tools
 
 ## 🧩 Repository Structure
