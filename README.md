@@ -1,10 +1,5 @@
 # FlexDRAM
 
-Here's a complete `README.md` for your GitHub repository, formatted for open-source use and including installation, usage instructions, contribution info, and citation:
-
----
-
-```markdown
 # FlexDRAM: A Reconfigurable and Accurate Circuit-Level Substrate for DRAM Design and Analysis
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -17,8 +12,6 @@ Existing DRAM models lack accuracy in sense amplifier design and access transist
 - Supporting accurate access transistor modeling using I<sub>ON</sub> and I<sub>OFF</sub>
 - Providing a DRAM datapath model validated against JEDEC DDR4 specs
 - Enabling fast design-space exploration with scaling, sizing, and transistor modeling tools
-
----
 
 ## 🧩 Repository Structure
 
@@ -40,7 +33,6 @@ FlexDRAM/
 
 ````
 
----
 
 ## 🚀 Getting Started
 
