@@ -1,6 +1,6 @@
 # FlexDRAM
 
-# FlexDRAM: A Reconfigurable and Accurate Circuit-Level Substrate for DRAM Design and Analysis
+# A Reconfigurable and Accurate Circuit-Level Substrate for DRAM Design and Analysis
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -131,7 +131,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgements
 
-This work is developed by researchers at [ASTHA Lab](https://asthalab.ece.ufl.edu), University of Florida. We thank the community and collaborators who have tested, reviewed, and supported the model development.
+This work is developed in collaboration with ASTHA LAB at The University of Kansas and Cornell University.
 
 ---
 
