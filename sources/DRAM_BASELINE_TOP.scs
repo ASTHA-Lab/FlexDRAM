@@ -1,0 +1,332 @@
+// Generated for: spectre
+// Generated on: Mar  6 22:28:05 2024
+// Design library name: DRAM_generic_model
+// Design cell name: DRAM_BASELINE_TOP
+// Design view name: schematic
+//spectre -64 DRAM_BASELINE_TOP.scs +escchars +log ./DRAM_BASELINE_TOP/psf/spectre.out -format psfascii -raw ./DRAM_BASELINE_TOP/psf +lqtimeout 900 -maxw 5 -maxn 5 +logstatus
+
+simulator lang=spectre
+global 0
+include "<parameter_path>"
+include "<model_path>"
+
+
+// Library name: DRAM_generic_model
+// Cell name: LSA_CORE
+// View name: schematic
+subckt LSA_CORE BL BLB EQ NLAT PLAT VDDdiv2 VSS
+    PM1 (BLB BL PLAT VDD) <pmos> w=lsapmosw l=lsapmosl
+    PM0 (BL BLB PLAT VDD) <pmos> w=lsapmosw l=lsapmosl
+    M0 (BLB BL NLAT VSS) <nmos> w=invnmosw l=invnmosl
+    NM2 (BLB EQ VDDdiv2 VSS) <nmos> w=pcnmosw l=pcnmosl
+    NM0 (BL EQ BLB VSS) <nmos> w=pcnmosw l=pcnmosl
+    M1 (BL BLB NLAT VSS) <nmos> w=invnmosw l=invnmosl
+    NM1 (VDDdiv2 EQ BL VSS) <nmos> w=pcnmosw l=pcnmosl
+ends LSA_CORE
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: INVX1
+// View name: schematic
+subckt INVX1 A VDD VSS Y
+    PM0 (Y A VDD VDD) <pmos> w=invpmosw l=invpmosl
+    NM0 (Y A VSS VSS) <nmos> w=invnmosw l=invnmosl
+ends INVX1
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: NAND2X1
+// View name: schematic
+subckt NAND2X1 A B VDD VSS Y
+    M0 (Y B VDD VDD) <pmos> w=nandpmosw l=nandpmosl
+    M1 (Y A VDD VDD) <pmos> w=nandpmosw l=nandpmosl
+    M3 (Y A net2 VSS) <nmos> w=nandnmosw l=nandnmosl
+    M2 (net2 B VSS VSS) <nmos> w=nandnmosw l=nandnmosl
+ends NAND2X1
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: ADDR_LAT
+// View name: schematic
+subckt ADDR_LAT D En Q VDD VSS
+    I3 (En net10 VDD VSS net6) NAND2X1
+    I2 (D En VDD VSS net5) NAND2X1
+    I0 (net5 net2 VDD VSS Q) NAND2X1
+    I1 (Q net6 VDD VSS net2) NAND2X1
+    I4 (D VDD VSS net10) INVX1
+ends ADDR_LAT
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: ADDR_CTRL
+// View name: schematic
+subckt ADDR_CTRL ADDR CAS_N CSLA_LAT RAS_N VDD VSS WLA_LAT
+    I0 (CAS_N VDD VSS net1) INVX1
+    I18 (RAS_N VDD VSS net7) INVX1
+    I2 (net2 net1 CSLA_LAT VDD VSS) ADDR_LAT
+    I1 (ADDR CAS_N net2 VDD VSS) ADDR_LAT
+    I17 (net8 net7 WLA_LAT VDD VSS) ADDR_LAT
+    I7 (ADDR RAS_N net8 VDD VSS) ADDR_LAT
+ends ADDR_CTRL
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: GPRE_GSA_CORE
+// View name: schematic
+subckt GPRE_GSA_CORE VDD VDDdiv2 VSS bl bl_bar eq out out_bar sense_N
+    NM0 (bl_bar eq bl VSS) <nmos> w=gpcnmosw l=gpcnmosl
+    NM2 (VDDdiv2 eq bl VSS) <nmos> w=gpcnmosw l=gpcnmosl
+    NM1 (VDDdiv2 eq bl_bar VSS) <nmos> w=gpcnmosw l=gpcnmosl
+    M4 (net1 sense_N VSS VSS) <nmos> w=gsnnmosw l=gsnnmosl
+    M3 (out_bar out net1 VSS) <nmos> w=gsanmosw l=gsanmosl
+    M0 (out out_bar net1 VSS) <nmos> w=gsanmosw l=gsanmosl
+    PM1 (out_bar sense_N bl_bar VDD) <pmos> w=accesspmosw l=accesspmosl
+    PM0 (out sense_N bl VDD) <pmos> w=accesspmosw l=accesspmosl
+    M2 (out_bar out VDD VDD) <nmos> w=gsapmosw l=gsapmosl
+    M1 (out out_bar VDD VDD) <nmos> w=gsapmosw l=gsapmosl
+ends GPRE_GSA_CORE
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: IOMUX
+// View name: schematic
+subckt IOMUX VDD VSS rin1 rin2 rwio1 rwio2 sel wout1 wout2
+    I0 (sel VDD VSS net1) INVX1
+    M8 (rin2 net1 rwio2 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M7 (wout2 sel rwio2 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M0 (rin1 net1 rwio1 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M4 (wout1 sel rwio1 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M6 (rwio2 sel rin2 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    M5 (rwio2 net1 wout2 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    M3 (rwio1 net1 wout1 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    PM0 (rwio1 sel rin1 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+ends IOMUX
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: LVL_SHIFTER
+// View name: schematic
+subckt LVL_SHIFTER IN INB OUT VDDH VSS
+    I7 (net10 VDDH VSS OUT) INVX1
+    NM6 (net10 IN VSS VSS) <nmos> w=lsnmosw l=lsnmosl
+    NM7 (net13 INB VSS VSS) <nmos> w=lsnmosw l=lsnmosl
+    PM8 (net13 net10 VDDH VDDH) <pmos> w=lspmosw l=lspmosl
+    PM7 (net10 net13 VDDH VDDH) <pmos> w=lspmosw l=lspmosl
+ends LVL_SHIFTER
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: WDEC_GL
+// View name: schematic
+subckt WDEC_GL A0 ACT_N VDD VDDH VSS WL0 WL1
+    I11 (net5 YB WL1 VDDH VSS) LVL_SHIFTER
+    I10 (net10 XB WL0 VDDH VSS) LVL_SHIFTER
+    I5 (net13 net1 VDD VSS YB) NAND2X1
+    I1 (net2 net1 VDD VSS XB) NAND2X1
+    I9 (ACT_N VDD VSS net1) INVX1
+    I2 (net13 VDD VSS net2) INVX1
+    I3 (A0 VDD VSS net13) INVX1
+    I4 (XB VDD VSS net10) INVX1
+    I6 (YB VDD VSS net5) INVX1
+ends WDEC_GL
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: WR_BUFFER
+// View name: schematic
+subckt WR_BUFFER EN VDD VSS data_in wr_data wr_data_b
+    I1 (EN VDD VSS net1) INVX1
+    I0 (EN VDD VSS net4) INVX1
+    NM3 (wr_data_b EN net2 VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    NM2 (net2 net11 VSS VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    M7 (net5 net11 VSS VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    NM1 (net6 net5 VSS VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    NM0 (wr_data EN net6 VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    M2 (net11 data_in VSS VSS) <nmos> w=wrbnmosw l=wrbnmosl
+    PM3 (wr_data_b net1 net7 VDD) <pmos> w=wrbpmosw l=wrbpmosl
+    PM2 (net7 net11 VDD VDD) <pmos> w=wrbpmosw l=wrbpmosl
+    M6 (net5 net11 VDD VDD) <pmos> w=wrbpmosw l=wrbpmosl
+    PM0 (net3 net5 VDD VDD) <pmos> w=wrbpmosw l=wrbpmosl
+    PM1 (wr_data net4 net3 VDD) <pmos> w=wrbpmosw l=wrbpmosl
+    M1 (net11 data_in VDD VDD) <pmos> w=wrbpmosw l=wrbpmosl
+ends WR_BUFFER
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: dram_cell_1T
+// View name: schematic
+subckt dram_cell_1T BL VSS WL
+    I6 (net2 WL BL VSS) mos_level1 width=80e-09 length=40e-09 vto=1 \
+        gamma=0 phi=0.6 lambda=0.05 tox=2.145426955325098e-06 u0=600 xj=0 \
+        is=5e-15 cj=1e-18 vj=0.75 mj=0.5 fc=0.5 tau=0 cgbo=1e-18 \
+        cgso=1e-18 cgdo=1e-18 dev_type=1 temp_nom=300.15 delta_vto=0.002 \
+        A=5e-15 B=6.8 C=7
+    C0 (net2 VSS) capacitor c=22f
+    V0 (net1 VSS) vsource type=pwl wave=[ 0 650m 53n 650m 54n 0 62 0 ]
+ends dram_cell_1T
+// End of subcircuit definition.
+
+
+// Library name: DRAM_CXL_gpdk_45
+// Cell name: dram_cell_1T_VA
+// View name: schematic
+subckt dram_cell_1T_VA BL VSS WL
+    I6 (net2 WL BL VSS) mos_level1 width=80e-09 length=40e-09 vto=1 \
+        gamma=0 phi=0.6 lambda=0.05 tox=2.145426955325098e-06 u0=600 xj=0 \
+        is=5e-15 cj=1e-18 vj=0.75 mj=0.5 fc=0.5 tau=0 cgbo=1e-18 \
+        cgso=1e-18 cgdo=1e-18 dev_type=1 temp_nom=300.15 delta_vto=0.002 \
+        A=5e-15 B=6.8 C=7
+    C0 (net2 VSS) capacitor c=22f
+    V0 (net1 VSS) vsource type=pwl wave=[ 0 650m 53n 650m 54n 0 62 0 ]
+ends dram_cell_1T_VA
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: CSLG
+// View name: schematic
+subckt CSLG A B CSEL VDD VSS X Y
+    PM1 (X csl_b A VDD) <pmos> w=cslpmosw l=cslpmosl
+    PM0 (Y csl_b B VDD) <pmos> w=cslpmosw l=cslpmosl
+    I1 (csl_b VDD VSS csl) INVX1
+    I0 (CSEL VDD VSS csl_b) INVX1
+    M1 (B csl Y VSS) <nmos> w=cslnmosw l=cslnmosl
+    M0 (A csl X VSS) <nmos> w=cslnmosw l=cslnmosl
+ends CSLG
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: XTGATE
+// View name: schematic
+subckt XTGATE IN1 IN2 OUT1 OUT2 SL VDD VSS
+    I0 (SL VDD VSS SLB) INVX1
+    M4 (IN2 SLB OUT2 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M0 (IN1 SLB OUT1 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M3 (OUT2 SL IN2 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    PM0 (OUT1 SL IN1 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+ends XTGATE
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: DATA_LAT_WO_DA
+// View name: schematic
+subckt DATA_LAT_WO_DA DAT_SEL VDD VSS data data_bar data_out
+    M7 (data_out net12 VDD VDD) <pmos> w=dlpmosw l=dlpmosl
+    M2 (net10 DAT_SEL VDD VDD) <pmos> w=dlpmosw l=dlpmosl
+    PM0 (net12 net10 Q VDD) <pmos> w=dlpmosw l=dlpmosl
+    M3 (net11 DAT_SEL Q VDD) <pmos> w=dlpmosw l=dlpmosl
+    M1 (net12 net10 VDD VDD) <pmos> w=dlpmosw l=dlpmosl
+    M8 (data_out net11 VSS VSS) <nmos> w=dlnmosw l=dlnmosl
+    M6 (net11 net10 VSS VSS) <nmos> w=dlnmosw l=dlnmosl
+    M5 (net10 DAT_SEL VSS VSS) <nmos> w=dlnmosw l=dlnmosl
+    M0 (Q DAT_SEL net12 VSS) <nmos> w=dlnmosw l=dlnmosl
+    M4 (Q net10 net11 VSS) <nmos> w=dlnmosw l=dlnmosl
+    I1 (Q data_bar VDD VSS net9) NAND2X1
+    I0 (data net9 VDD VSS Q) NAND2X1
+ends DATA_LAT_WO_DA
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: IO_GATING
+// View name: schematic
+subckt IO_GATING VDD VSS rdout1 rdout2 rwio1 rwio2 sel wrin1 wrin2
+    M12 (wrin1 sel rwio1 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M11 (rdout1 net1 rwio1 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M10 (wrin2 sel rwio2 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M9 (rdout2 net1 rwio2 VSS) <nmos> w=tgatenmosw l=tgatenmosl
+    M16 (rwio1 sel rdout1 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    M15 (rwio1 net1 wrin1 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    M14 (rwio2 net1 wrin2 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    M13 (rwio2 sel rdout2 VDD) <pmos> w=tgatepmosw l=tgatepmosl
+    I0 (sel VDD VSS net1) INVX1
+ends IO_GATING
+// End of subcircuit definition.
+
+// Library name: DRAM_generic_model
+// Cell name: DRAM_BASELINE_TOP
+// View name: schematic
+I4 (lbl lbl_b EQ net16 net17 VDDdiv2 VSS) LSA_CORE
+I38 (A0 CAS_N net9 RAS_N VDD VSS net6) ADDR_CTRL
+//sources
+V30 (BNK_SEL VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=40n \
+        rise=1n fall=1n width=10n
+V34 (dsense_N VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=40n delay=20n \
+        rise=1n fall=1n width=12n
+V32 (IOSEL VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=40n \
+        rise=1n fall=1n width=10n
+V33 (DATA_SEL VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=40n \
+        rise=1n fall=1n width=10n
+V26 (ACTC_N VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=20n delay=0 \
+        rise=1n fall=1n width=4n
+V18 (data_in VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=50n delay=40n \
+        rise=1n fall=1n width=5n
+V8 (geq VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=35n delay=0 rise=1n \
+        fall=1n width=18n
+V25 (gsn VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=40n delay=20n \
+        rise=1n fall=1n width=12n
+V14 (RWSEL VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=40n \
+        rise=1n fall=1n width=10n
+V19 (RAS_N VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=70n delay=10n \
+        rise=1n fall=1n width=32n
+V23 (CAS_N VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=70n delay=20n \
+        rise=1n fall=1n width=18.25n
+V20 (A0 VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=100n delay=8n rise=1n \
+        fall=1n width=20n
+V22 (ACT_N VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=70n delay=5n \
+        rise=1n fall=1n width=40n
+V24 (sense_P VSS) vsource type=pulse val0=<nom_voltage> val1=0 period=70n delay=15n \
+        rise=1n fall=1n width=20n
+V0 (EQ VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=35n delay=0 rise=1n \
+        fall=1n width=5n
+V1 (sense_N VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=15n \
+        rise=1n fall=1n width=20n
+V31 (BG_SEL VSS) vsource type=pulse val0=0 val1=<nom_voltage> period=70n delay=40n \
+        rise=1n fall=1n width=10n
+        
+V4 (VDDdiv2 VSS) vsource dc=<half_vdd> type=dc
+V3 (VDDH VSS) vsource dc=<act_voltage> type=dc
+V2 (VSS 0) vsource dc=0 type=dc
+V35 (VDD VSS) vsource dc=<nom_voltage> type=dc
+        
+// sources end
+
+I42 (VDD VDDdiv2 VSS gbl gbl_b geq lio lio_b gsn) GPRE_GSA_CORE
+NM5 (net16 sense_N VSS VSS) <nmos> w=nlatw l=nlatl
+I8 (VDD VSS lio lio_b glio1 glio2 RWSEL gbl gbl_b) IOMUX
+R3 (WL1 net3) resistor r=20.48K
+R1 (net1 lbl_b) resistor r=100
+R0 (net2 lbl) resistor r=1K
+R4 (WL0 net11) resistor r=20.48K
+I11 (net6 ACT_N VDD VDDH VSS WL0 WL1) WDEC_GL
+I22 (net9 ACTC_N VDD VDDH VSS CSEL net10) WDEC_GL
+C7 (net11 VSS) capacitor c=35.84f
+C3 (net3 VSS) capacitor c=35.84f
+C5 (lbl VSS) capacitor c=30f
+C4 (lbl_b VSS) capacitor c=30f
+I34 (RWSEL VDD VSS data_in net7 net5) WR_BUFFER
+I0 (net2 VSS net11) dram_cell_1T
+I5 (net1 VSS net3) dram_cell_1T
+I10 (lbl lbl_b CSEL VDD VSS gbl gbl_b) CSLG
+I7 (net14 net15 net21 net20 BG_SEL VDD VSS) XTGATE
+I40 (glio1 glio2 net14 net15 BNK_SEL VDD VSS) XTGATE
+I41 (DATA_SEL VDD VSS net12 net8 data_out) DATA_LAT_WO_DA
+I1 (VDD VSS net12 net8 net21 net20 IOSEL net7 net5) IO_GATING
+PM2 (net17 sense_P VDD VDD) <pmos> w=platw l=platl
+
+//simulation parameters
+
+//include "./_graphical_stimuli.scs"
+simulatorOptions options psfversion="1.4.0" reltol=1e-3 vabstol=1e-6 \
+    iabstol=1e-12 temp=<temp> tnom=27 scalem=1.0 scale=1.0 gmin=1e-12 rforce=1 \
+    maxnotes=5 maxwarns=5 digits=5 cols=80 pivrel=1e-3 \
+    sensfile="../psf/sens.output" checklimitdest=psf 
+tran tran stop=100n errpreset=conservative write="spectre.ic" \
+    writefinal="spectre.fc" annotate=status maxiters=5 
+finalTimeOP info what=oppoint where=rawfile
+modelParameter info what=models where=rawfile
+element info what=inst where=rawfile
+outputParameter info what=output where=rawfile
+designParamVals info what=parameters where=rawfile
+primitives info what=primitives where=rawfile
+subckts info what=subckts where=rawfile
+saveOptions options save=all pwr=all currents=all
+ahdl_include "access_tran_model.va"

@@ -1,0 +1,3 @@
+// Current Value is for 45n model
+parameters lsapmosw=129n lsapmosl=48n invnmosw=129n invnmosl=48n pcnmosw=516n pcnmosl=48n invpmosw=258n invpmosl=48n nandpmosw=129n nandpmosl=48n nandnmosw=129n nandnmosl=48n gpcnmosw=645n gpcnmosl=48n gsnnmosw=129n gsnnmosl=48n gsanmosw=516n gsanmosl=48n accesspmosw=645n accesspmosl=48n gsapmosw=645n gsapmosl=48n tgatenmosw=129n tgatenmosl=48n tgatepmosw=129n tgatepmosl=48n lsnmosw=645n lsnmosl=48n lspmosw=129n lspmosl=48n wrbnmosw=774n wrbnmosl=48n wrbpmosw=774n wrbpmosl=48n accessfetw=141n accessfetl=48n cslpmosw=129n cslpmosl=48n cslnmosw=129n cslnmosl=48n dlpmosw=129n dlpmosl=48n dlnmosw=129n dlnmosl=48n nlatw=129n nlatl=48n platw=129n platl=48n dsanmosw=516n dsanmosl=48n dsnnmosw=129n dsnnmosl=48n dsapmosw=645n dsapmosl=48n
+
