@@ -4,11 +4,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**FlexDRAM** is an open-source, reconfigurable DRAM circuit-level simulation tool that enables precise design, modeling, and timing analysis of DRAM datapath from bitcell to I/O. It includes a Verilog-A access transistor generator, automated model wrappers, JEDEC-compliant timing, and a Spectre-compatible simulation flow.
+**FlexDRAM** is an open-source, reconfigurable DRAM circuit-level simulation tool that enables accurate design, modeling, and timing analysis of DRAM datapath from bitcell to chip I/O. It includes a Verilog-A access transistor generator, SPICE based datapath model, automated wrapper for design space exploration, and a Cadence Spectre-compatible simulation flow.
 
 ## 🔬 Motivation
 
-Existing DRAM models lack accuracy in sense amplifier design and access transistor characterization, leading to large errors in power and performance estimates. FlexDRAM addresses these gaps by:
+Existing circuit-level DRAM models lack accuracy in sense amplifier design and access transistor characterization, leading to large errors in power and performance estimates. FlexDRAM addresses these gaps by:
 - Supporting accurate access transistor modeling using I<sub>ON</sub> and I<sub>OFF</sub>
 - Providing a DRAM datapath model in SPICE validated against JEDEC DDR4 specs
 - Enabling fast design-space exploration with scaling, sizing, and transistor modeling tools
@@ -57,7 +57,7 @@ Follow this step-by-step guide to simulate a DRAM datapath with FlexDRAM:
 
 ```text
 Step 0:
-Edit parameters in `param.scs` — e.g., transistor widths and lengths
+Edit parameters in `param.scs` — e.g., transistor widths and lengths (if necessary)
 
 Step 1:
 Configure simulation and device parameters in `config.ini`
@@ -79,7 +79,7 @@ Tools → VIVA XL → Waveform
 
 Step 6:
 Load results from:
-File → Open Results → Navigate to `./butterworth/psf`
+File → Open Results → Navigate to `./DRAM_BASELINE_TOP/psf`
 
 Step 7:
 Probe signals → Right-click → Send to → Export → CSV
